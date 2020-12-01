@@ -1,0 +1,14 @@
+{application, aoc2020,
+ [{description, "Advent of Code 2020 Solutions"},
+  {vsn, {git, long}},
+  {registered, []},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
