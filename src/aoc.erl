@@ -5,6 +5,13 @@
     solve_all/0
 ]).
 
+-type input_type() :: number_list.
+
+-callback input_type() -> input_type().
+-callback p1(term()) -> term().
+-callback p2(term()) -> term().
+-optional_callbacks([p2/1]).
+
 solve_all() ->
     Problems = lists:flatten([get_problems(Day) || Day <- get_days()]),
     [solve(Day, Part) || {Day, Part} <- Problems].
