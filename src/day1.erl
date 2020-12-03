@@ -10,5 +10,5 @@ p1(Entries) ->
     Product.
 
 p2(Entries) ->
-    [Product | _] = [X * Y * Z || X <- Entries, Y <- Entries, Z <- Entries, X + Y + Z == 2020],
+    [Product | _] = [X * Y * Z || X <- Entries, Y <- Entries, X + Y =< 2020, Z <- Entries, X + Y + Z == 2020],
     Product.

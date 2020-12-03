@@ -56,7 +56,7 @@ build_map([FirstLine | _Rest] = Lines) ->
 path(#map{} = Map, Step) ->
     path(Map, Step, [{0, 0}], {0, 0}).
 
-path(#map{h = Height}, _Step, [_OverStep | Steps], {_X, Y}) when Y >= Height -> lists:reverse(Steps);
+path(#map{h = Height}, _Step, [_OverStep | Steps], {_X, Y}) when Y > Height -> lists:reverse(Steps);
 path(#map{} = Map, {XS, YS} = Step, Steps, {X, Y}) ->
     path(Map, Step, [{X + XS, Y + YS} | Steps], {X + XS, Y + YS}).
 
