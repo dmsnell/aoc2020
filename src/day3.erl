@@ -1,7 +1,7 @@
 -module(day3).
 -behavior(aoc).
 
--export([input_type/0, p1/1, p2/1]).
+-export([input_type/0, parse_input/1, p1/1, p2/1]).
 -record(map, {
     w :: non_neg_integer(),
     h :: non_neg_integer(),
@@ -9,20 +9,13 @@
 }).
 
 input_type() -> lines.
+parse_input(Lines) -> build_map(Lines).
 
-p1(Lines) ->
-    Map = build_map(Lines),
+p1(Map) ->
     tree_count(Map, path(Map, {3, 1})).
 
-p2(Lines) ->
-    Map = build_map(Lines),
-    Steps = [
-        {1, 1},
-        {3, 1},
-        {5, 1},
-        {7, 1},
-        {1, 2}
-    ],
+p2(Map) ->
+    Steps = [{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}],
     lists:foldl(
         fun (X, Product) -> X * Product end,
         1,

@@ -1,7 +1,7 @@
 -module(day2).
 -behavior(aoc).
 
--export([input_type/0, p1/1, p2/1]).
+-export([input_type/0, parse_input/1, p1/1, p2/1]).
 
 -record(rule, {
     char :: char(),
@@ -10,26 +10,17 @@
 }).
 
 input_type() -> lines.
+parse_input(Lines) -> lists:map(fun parse_line/1, Lines).
 
--spec p1(Lines :: list(binary())) -> non_neg_integer().
+-spec p1(list({#rule{}, Password :: binary()})) -> non_neg_integer().
 
 %% @doc Counts valid passwords in corrupted list
 %% @end
-p1(Lines) ->
-    Valids = [
-        Password ||
-        {Rule, Password} <- lists:map(fun parse_line/1, Lines),
-        check_password(Password, Rule) == valid
-    ],
-    length(Valids).
+p1(Pairs) ->
+    length([Password || {Rule, Password} <- Pairs, check_password(Password, Rule) == valid]).
 
-p2(Lines) ->
-    Valids = [
-        Password ||
-        {Rule, Password} <- lists:map(fun parse_line/1, Lines),
-        check_password_positions(Password, Rule) == valid
-    ],
-    length(Valids).
+p2(Pairs) ->
+    length([Password || {Rule, Password} <- Pairs, check_password_positions(Password, Rule) == valid]).
 
 %% Internal functions
 
