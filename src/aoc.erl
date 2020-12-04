@@ -5,7 +5,7 @@
     solve_all/0
 ]).
 
--type input_type() :: lines | number_list.
+-type input_type() :: raw | lines | number_list.
 
 -callback input_type() -> input_type().
 -callback parse_input(input_type()) -> term().
@@ -28,6 +28,8 @@ get_days() ->
 
 -spec get_input(Name :: string(), lines)       -> list(binary())
       ;        (Name :: string(), number_list) -> list(number()).
+get_input(Name, raw) ->
+    input:read(Name);
 get_input(Name, lines) ->
     input:lines(Name);
 get_input(Name, number_list) ->
