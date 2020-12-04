@@ -25,7 +25,7 @@ p2(Map) ->
 %% Internal functions
 
 tree_count(Map, Path) ->
-    length(lists:filtermap(fun (XY) -> at(Map, XY) == tree end, Path)).
+    utils:count(fun (XY) -> at(Map, XY) end, tree, Path).
 
 at(#map{w = Width, grid = Grid}, {X, Y}) ->
     case maps:get(Y, Grid, missing) of

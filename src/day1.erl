@@ -6,9 +6,7 @@
 input_type() -> number_list.
 
 p1(Entries) ->
-    [Product | _] = [X * Y || X <- Entries, Y <- Entries, X + Y == 2020],
-    Product.
+    hd([X * Y || X <- Entries, Y <- Entries, X + Y == 2020]).
 
 p2(Entries) ->
-    [Product | _] = [X * Y * Z || X <- Entries, Y <- Entries, X + Y =< 2020, Z <- Entries, X + Y + Z == 2020],
-    Product.
+    hd([X * Y * Z || X <- Entries, Y <- Entries, X + Y =< 2020, Z <- Entries, X + Y + Z == 2020]).
