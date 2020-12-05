@@ -17,14 +17,16 @@ Start by cloning the repo and running `rebar3 shell` for a REPL.
 
 ```erlang
 aoc:solve_all() = [
-    {day1,p1,970816,{0.782,ms}},
-    {day1,p2,96047280,{3.65,ms}},
-    {day2,p1,458,{0.4,ms}},
-    {day2,p2,342,{0.151,ms}},
-    {day3,p1,156,{0.252,ms}},
-    {day3,p2,3521829480,{0.474,ms}},
-    {day4,p1,247,{0.051,ms}},
-    {day4,p2,145,{0.302,ms}}
+    {day1,p1,970816,{0.422,ms}},
+    {day1,p2,96047280,{3.401,ms}},
+    {day2,p1,458,{0.316,ms}},
+    {day2,p2,342,{0.122,ms}},
+    {day3,p1,156,{0.174,ms}},
+    {day3,p2,3521829480,{0.266,ms}},
+    {day4,p1,247,{0.043,ms}},
+    {day4,p2,145,{0.385,ms}},
+    {day5,p1,935,{0.601,ms}},
+    {day5,p2,[743],{1.411,ms}}
 ].
 
 aoc:solve(day2, p2) = {day2,p2,342,{1.91,ms}}.
