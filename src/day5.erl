@@ -1,11 +1,18 @@
 -module(day5).
 -behavior(aoc).
 
--export([input_type/0, p1/1, p2/1]).
+-export([input_type/0, parse_input/1, p1/1, p2/1]).
+
+-type seat() :: {
+    Row :: non_neg_integer(),
+    Col :: non_neg_integer(),
+    Id  :: non_neg_integer()
+}.
 
 input_type() -> lines.
+parse_input(Lines) -> lists:map(fun seat/1, Lines).
 
--spec p1(Lines :: list(binary())) -> non_neg_integer().
+-spec p1(Seats :: list(seat())) -> non_neg_integer().
 
 %% @doc Calculate highest seat ID given binary partitioning addresses
 %%
@@ -28,15 +35,14 @@ input_type() -> lines.
 %%
 %% It then needs to return the largest seat ID in the manifest.
 %% @end
-p1(Lines) ->
-    lists:foldl(fun ({_R, _C, ID}, Max) -> max(Max, ID) end, 0, lists:map(fun seat/1, Lines)).
+p1(Seats :: list(seat())) ->
+    lists:foldl(fun ({_R, _C, ID}, Max) -> max(Max, ID) end, 0, Seats).
 
 -spec p2(Lines :: list(binary())) -> list(non_neg_integer()).
 
 %% @doc Given a manifest of seat assignments, finds un-filled seats
 %% @end
-p2(Lines) ->
-    Seats0 = lists:map(fun seat/1, Lines),
+p2(Seats0) ->
     Seats1 = lists:sort(fun ({_, _, ID1}, {_, _, ID2}) -> ID1 =< ID2 end, Seats0),
     missing_seats(Seats1).
 
