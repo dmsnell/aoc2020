@@ -35,7 +35,7 @@ parse_input(Lines) -> lists:map(fun seat/1, Lines).
 %%
 %% It then needs to return the largest seat ID in the manifest.
 %% @end
-p1(Seats :: list(seat())) ->
+p1(Seats) ->
     lists:foldl(fun ({_R, _C, ID}, Max) -> max(Max, ID) end, 0, Seats).
 
 -spec p2(Lines :: list(binary())) -> list(non_neg_integer()).

@@ -26,14 +26,12 @@ solve(Day, Part) ->
 get_days() ->
     [list_to_atom(Module) || {[$d, $a, $y | _] = Module, _, _} <- code:all_available()].
 
--spec get_input(Name :: string(), lines)       -> list(binary())
-      ;        (Name :: string(), number_list) -> list(number()).
-get_input(Name, raw) ->
-    input:read(Name);
-get_input(Name, lines) ->
-    input:lines(Name);
-get_input(Name, number_list) ->
-    input:number_lines(Name).
+-spec get_input(Name :: string(), lines)            -> list(binary())
+      ;        (Name :: string(), groups_and_lines) -> list(list(binary()))
+      ;        (Name :: string(), number_list)      -> list(number())
+      ;        (Name :: string(), raw)              -> binary().
+get_input(Name, Type) ->
+    input:Type(Name).
 
 get_problems(Day) ->
     code:ensure_loaded(Day),
