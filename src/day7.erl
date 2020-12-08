@@ -7,10 +7,10 @@
 input_type() -> lines.
 
 parse_input(Lines) ->
-    lists:map(fun parse_rule/1, Lines).
+    maps:from_list(lists:map(fun parse_rule/1, Lines)).
 
 p1(Rules) ->
-    utils:count(fun ({Color, _Contains}) -> can_contain(Rules, Color, <<"shiny gold">>) end, true, Rules).
+    utils:count(fun (Contents) -> can_contain(Rules, Contents, <<"shiny gold">>) end, true, maps:values(Rules)).
 
 p2(Rules) ->
     contains(Rules, <<"shiny gold">>, 0).
@@ -18,24 +18,17 @@ p2(Rules) ->
 %% Internal functions
 
 contains(Rules, <<Color/binary>>, Count) ->
-    contains(Rules, lists:keyfind(Color, 1, Rules), Count);
-contains(_Rules, {_Color, []}, Count) ->
-    Count;
-contains(Rules, {_OuterColor, Contents}, Count) ->
-    Count + lists:sum(lists:map(fun ({Color, InnerCount}) -> InnerCount * (1 + contains(Rules, Color, 0)) end, Contents)).
+    contains(Rules, maps:get(Color, Rules), Count);
+contains(Rules, Contents, Count) when is_map(Contents) ->
+    Count + lists:sum(lists:map(fun ({Color, InnerCount}) -> InnerCount * (1 + contains(Rules, Color, 0)) end, maps:to_list(Contents))).
 
 can_contain(Rules, <<Outer/binary>>, Inner) ->
-    can_contain(Rules, lists:keyfind(Outer, 1, Rules), Inner);
-can_contain(_Rules, {_Outer, []}, _Inner) ->
-    false; % empty bag contains nothing
-can_contain(Rules, {_Outer, Contents} = Rule, Inner) ->
-    case can_directly_contain(Rule, Inner) of
+    can_contain(Rules, maps:get(Outer, Rules), Inner);
+can_contain(Rules, Contents, Inner) when is_map(Contents) ->
+    case maps:is_key(Inner, Contents) of
         true  -> true; % directly allowed in bag
-        false -> lists:any(fun ({Color, _Count}) -> can_contain(Rules, Color, Inner) end, Contents)
+        false -> lists:any(fun (Color) -> can_contain(Rules, Color, Inner) end, maps:keys(Contents))
     end.
-
-can_directly_contain({_Outer, Contents}, Inner) ->
-    lists:keymember(Inner, 1, Contents).
 
 %% Rule parsing functions
 
@@ -51,7 +44,7 @@ parse_rule(<<Rule/binary>>) ->
         fun parse_empty_bag/1,
         fun parse_bag_list/1
     ], Rest2),
-    {BagColor, Contents}.
+    {BagColor, maps:from_list(Contents)}.
 
 parse_empty_bag(<<"no other bags", Rest/binary>>) ->
     {[], Rest}.

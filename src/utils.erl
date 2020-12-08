@@ -11,15 +11,20 @@ count(Mapper, Value, List)
          is_list(List) ->
     length([1 || Item <- List, Mapper(Item) == Value]).
 
-%% Use this function instead to un-isolated parts
-%% and get better stack trackes in the shell
-% isolated(Function) -> Function().
-% isolated(Function, _Timeout) -> Function().
-
 isolated(Function) ->
     isolated(Function, 1000).
 
 isolated(Function, Timeout) when is_function(Function) ->
+    isolated(true, Function, Timeout);
+
+isolated(true, Function) ->
+    isolated(true, Function, 1000);
+
+isolated(false, Function) -> Function().
+
+isolated(false, Function, _Timeout) -> Function();
+
+isolated(true, Function, Timeout) when is_function(Function) ->
     Self = self(),
     spawn(fun () -> isolated_runner(Self, Function) end),
     receive
