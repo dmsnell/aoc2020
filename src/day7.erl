@@ -2,6 +2,7 @@
 -behavior(aoc).
 
 -export([input_type/0, parse_input/1, p1/1, p2/1]).
+-export([parse_count/1]).
 
 input_type() -> lines.
 
@@ -67,6 +68,11 @@ parse_bag_count(<<Input/binary>>) ->
 parse_count(<<Input/binary>>) ->
     parse_count(Input, []).
 
+parse_count(<<"-", Rest/binary>>, []) ->
+    {Value, Unparsed} = parse_count(Rest, []),
+    {-Value, Unparsed};
+parse_count(<<"+", Rest/binary>>, []) ->
+    parse_count(Rest, []);
 parse_count(<<A, Rest/binary>>, Digits) when A >= $0, A =< $9 ->
     parse_count(Rest, [A | Digits]);
 parse_count(<<Rest/binary>>, Digits) ->

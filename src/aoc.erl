@@ -5,10 +5,10 @@
     solve_all/0
 ]).
 
--type input_type() :: raw | lines | number_list.
+-type input_type() :: raw | groups_and_lines | lines | number_list.
 
 -callback input_type() -> input_type().
--callback parse_input(input_type()) -> term().
+-callback parse_input(term()) -> term().
 -callback p1(term()) -> term().
 -callback p2(term()) -> term().
 -optional_callbacks([parse_input/1, p2/1]).
@@ -18,10 +18,12 @@ solve_all() ->
     [solve(Day, Part) || {Day, Part} <- Problems].
 
 solve(Day, Part) ->
-    InputType = Day:input_type(),
-    InputName = atom_to_list(Day),
-    {USecs, Value} = timer:tc(Day, Part, [parse_input(Day, get_input(InputName, InputType))]),
-    {Day, Part, Value, {USecs / 1000, ms}}.
+    utils:isolated(fun () ->
+        InputType = Day:input_type(),
+        InputName = atom_to_list(Day),
+        {USecs, Value} = timer:tc(Day, Part, [parse_input(Day, get_input(InputName, InputType))]),
+        {Day, Part, Value, {USecs / 1000, ms}}
+    end, infinity).
 
 get_days() ->
     [list_to_atom(Module) || {[$d, $a, $y | _] = Module, _, _} <- code:all_available()].
