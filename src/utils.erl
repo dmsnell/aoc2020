@@ -3,7 +3,8 @@
 -export([
     count/3,
     isolated/1,
-    isolated/2
+    isolated/2,
+    shuffle/1
 ]).
 
 count(Mapper, Value, List)
@@ -40,3 +41,7 @@ isolated_runner(From, Function) when is_function(Function) ->
     catch
         EType:EValue -> From ! {EType, EValue}
     end.
+
+%% Cite: https://www.programming-idioms.org/idiom/10/shuffle-a-list/1005/erlang
+shuffle(List) when is_list(List) ->
+    [Element || {_RandIndex, Element} <- lists:sort([{rand:uniform(), N} || N <- List])].
