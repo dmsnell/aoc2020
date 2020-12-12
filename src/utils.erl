@@ -16,7 +16,7 @@ isolated(Function) ->
     isolated(Function, 1000).
 
 isolated(Function, Timeout) when is_function(Function) ->
-    isolated(true, Function, Timeout);
+    isolated(false, Function, Timeout);
 
 isolated(true, Function) ->
     isolated(true, Function, 1000);

@@ -15,7 +15,16 @@
 
 solve_all() ->
     Problems = lists:flatten([get_problems(Day) || Day <- get_days()]),
-    [solve(Day, Part) || {Day, Part} <- Problems].
+    lists:sort(fun problem_sort/2, [solve(Day, Part) || {Day, Part} <- Problems]).
+
+problem_sort(A, B) ->
+    <<"day", DayA/binary>> = atom_to_binary(element(1, A)),
+    <<"day", DayB/binary>> = atom_to_binary(element(1, B)),
+    <<"p", PartA/binary>> = atom_to_binary(element(2, A)),
+    <<"p", PartB/binary>> = atom_to_binary(element(2, B)),
+    SortA = {binary_to_integer(DayA), binary_to_integer(PartA)},
+    SortB = {binary_to_integer(DayB), binary_to_integer(PartB)},
+    SortA < SortB.
 
 solve(Day, Part) ->
     utils:isolated(fun () ->
