@@ -2,7 +2,7 @@
 -behavior(aoc).
 
 -export([input_type/0, parse_input/1, p1/1, p2/1]).
--export([parse_count/1]).
+-export([parse_count/1, parse_or/2]).
 
 input_type() -> lines.
 
